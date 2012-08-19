@@ -16,7 +16,7 @@ see which Rack filters are enabled for your Rails 3 application
 
     $ rake middleware
 
-  when seeing use ActiveRecord::QueryCache, wondered what does it has to do with serving requests anyway?
+when seeing use ActiveRecord::QueryCache, wondered what does it has to do with serving requests anyway?
 
     module ActiveRecord
       class QueryCache
@@ -29,7 +29,7 @@ see which Rack filters are enabled for your Rails 3 application
       end
     end
 
-  Active Record query caching does not have anything specially to do with serving requests. It's that Rails 3 is designed in such a way that different aspects of its behavior are introduced into that request call chain as individual Rack middleware components or filters.
+Active Record query caching does not have anything specially to do with serving requests. It's that Rails 3 is designed in such a way that different aspects of its behavior are introduced into that request call chain as individual Rack middleware components or filters.
 
 ## how to configure the middleware?
 
@@ -42,3 +42,21 @@ see which Rack filters are enabled for your Rails 3 application
 # 2. Action Dispatch
 
 Action Dispatch contains classes that interface the rest of the controller system to Rack.
+
+# 3. Render
+
+    render :template => 'index'
+    render :partial  => 'shared/product'
+    render :text     => 'helloworld'
+    render :json     => @record
+    render :xml      => @record
+    render :nothing  => true, :status => 401 # Unauthorized
+
+    # Rendering Options
+    render 'index', :content_type => 'text/html'
+    render 'index', :status => 200
+    render :layout => false
+      ## layout can also used as
+      layout 'event', :only => ['index', 'new']
+      layout 'event', :except => ['index', 'new']
+      layout false
