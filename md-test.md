@@ -9,12 +9,12 @@ _italic_
 ```ruby
 class Foo
   attr_accessible :name, :email
-  
+
   def initialize(name, email)
     @name = name
     @email = email
   end
-  
+
   def foo
     p "hello world"
   end
