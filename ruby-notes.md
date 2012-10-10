@@ -27,3 +27,14 @@
 
 <3. [1, 2, 3].inject(&:+) can be omitted for [1, 2, 3].inject(:+).
 
+### 2. Array#pack, String#unpack
+
+["abc"].pack("a") => "a"
+["abc"].pack("a*") => "abc"
+["abc"].pack("a4") => "abc\0"
+
+"abc\0".unpack("a4") => ["abc\0"]
+"abc ".unpack("a4") => ["abc "]
+
++ KEY_SEPARATORS = { :default => [0x1F].pack("c*"), :segment => [0x1E].pack("c*") }.freeze }
+
