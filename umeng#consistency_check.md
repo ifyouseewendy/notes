@@ -4,56 +4,103 @@
 
 + Sum check
 
-  ```ruby
-  metric = [ :install, :launch, :active, :active_rate, :upgrade ]
+  - 对 各项指标 针对 各过滤条件 进行和值检验。
 
-  COUNT( metric.sum_by_channels( c1, c2, ..cn ) ).should == COUNT( metric )
-  COUNT( metric.sum_by_versions( v1, v2, ..vn ) ).should == COUNT( metric )
+    * 指标： 新增用户、启动次数、活跃用户、活跃率、升级用户
+    * 过滤条件： 渠道、版本、分群
 
-  COUNT( metric.by_channel(c1).sum_by_versions( v1, v2, ..vn ) ).should == COUNT( metric.by_channel(c1) )
-  COUNT( metric.by_version(v1).sum_by_channels( c1, c2, ..cn ) ).should == COUNT( metric.by_version(v1) )
-  <=> COUNT( metric.sum_by_filters( (c1,v1), (c2,v2), ..(cn,vn) ).should == COUNT( metric )
+  - 1\. 过滤条件 _只包含_ **渠道、版本** 时，有如下规则：
 
-  => COUNT( metric.by_segment(s1).sum_by_channels( c1, c2, ..cn ) ).should == COUNT( metric.by_segment(s1) )
-  => COUNT( metric.by_segment(s1).sum_by_versions( v1, v2, ..vn ) ).should == COUNT( metric.by_segment(s1) )
-  <=> COUNT( metric.by_segment(s1).sum_by_filters( (c1,v1), (c2,v2), ..(cn,vn) ).should == COUNT( metric.by_segment(s1) )
+      * 某项指标（eg. 新增用户）的值
+          == 该指标经 **各个渠道** 过滤后的 值之和
+          == 该指标经 **各个版本** 过滤后的 值之和
+          == 该指标经 **各个渠道与各个版本** 交叉过滤后的 值之和
+      * 指标m经 **渠道c** 过滤后的值 == 指标m经 **渠道c** 与 **各个版本** 交叉过滤后的 值之和
+      * 指标m经 **版本v** 过滤后的值 == 指标m经 **版本v** 与 **各个渠道** 交叉过滤后的 值之和
 
-  # as segment is a set of filters( {date, location, event} ),
-  # it is different from channel|version, channel|version is just like a sub-element of segment.
-  => COUNT( metric.by_channel(c1).sum_by_segments( s1, s2, ..sn ) ).maybe != COUNT( metric.by_channel(c1) )
+  - 2\. 过滤条件 _包含_ **分群** 时，有如下规则：（由于**分群**中包含了 时间、地域、自定义事件 的筛选，故可将分群看作一组过滤条件的集合，渠道、版本只相当于分群中的一个元素。由此，对于分群的和值检验与对渠道和版本的检验略有不同。)
 
-  # if segment_a = { date < '2012-10-01' }, segment_b = { date >= '2012-10-01' }
-  => COUNT( metric.by_channel(c1).sum_by_segments( segment_a, segment_b ) ).should == COUNT( metric.by_channel(c1) )
-  # if segment_a = { date < '2012-10-01' && location = {'China'} }, segment_b = { date >= '2012-10-01' }, segment_c = { location != {'China'} }
-  => COUNT( metric.by_version(v1).sum_by_segments( segment_a, segment_b, segment_c ).should == COUNT( metric.by_version(v1) )
-  # if s1 = A1, s2 = A2, ..sn = An ( { A1, A2, ..An } == { :all } )
-  => COUNT( metric.by_channel(c1).sum_by_segments( s1, s2, .. sn ) ).should == COUNT( metric.by_channel(c1) )
+      * 指标m经 **分群s** 过滤后的值 == 指标m经 **分群s** 与 **各个渠道** 交叉过滤后的 值之和
+      * 指标m经 **分群s** 过滤后的值 == 指标m经 **分群s** 与 **各个版本** 交叉过滤后的 值之和
+      * 指标m经 **分群s** 过滤后的值 == 指标m经 **分群s** 与 **各个渠道与各个版本** 交叉过滤后的 值之和
+      * ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+      * 如果 **分群s1** 与 **分群s2, 分群s3, ..分群sn** 可组成一个全集，有如下规则：
 
-  ```
+          ```ruby
+          eg.
+          分群s1 = { 日期 <  '2012-10-01', 国家 == { '中国' } }
+          分群s2 = { 日期 >= '2012-10-01' }
+          分群s3 = { 国家 == { 除'中国'外的所有国家 } }
+          ```
+
+        - 指标m经 **渠道c** 过滤后的值 == 指标m经 **渠道c** 与 **各个分群** 交叉过滤后的 值之后
+        - 指标m经 **渠道c** 过滤后的值 == 指标m经 **渠道c** 与 **各个分群与各个版本** 交叉过滤后的 值之后
+        - 指标m经 **版本v** 过滤后的值 == 指标m经 **版本v** 与 **各个分群** 交叉过滤后的 值之后
+        - 指标m经 **版本v** 过滤后的值 == 指标m经 **版本v** 与 **各个分群与各个渠道** 交叉过滤后的 值之后
+
+  - 3\. ___pseudo-code___
+
+      ```ruby
+      metric = [ install, launch, active, active_rate, upgrade ]
+
+      COUNT( metric.sum_by_channels( c1, c2, ..cn ) ).should == COUNT( metric )
+      COUNT( metric.sum_by_versions( v1, v2, ..vn ) ).should == COUNT( metric )
+
+      COUNT( metric.by_channel(c1).sum_by_versions( v1, v2, ..vn ) ).should == COUNT( metric.by_channel(c1) )
+      COUNT( metric.by_version(v1).sum_by_channels( c1, c2, ..cn ) ).should == COUNT( metric.by_channel(v1) )
+      <=> COUNT( metric.sum_by_filters( (c1,v1), (c2,v2), ..(cn,vn) ).should == COUNT( metric )
+
+      => COUNT( metric.by_segment(s1).sum_by_channels( c1, c2, ..cn ) ).should == COUNT( metric.by_segment(s1) )
+      => COUNT( metric.by_segment(s1).sum_by_versions( v1, v2, ..vn ) ).should == COUNT( metric.by_segment(s1) )
+      <=> COUNT( metric.by_segment(s1).sum_by_filters( (c1,v1), (c2,v2), ..(cn,vn) ).should == COUNT( metric.by_segment(s1) )
+
+      # as segment is a set of filters( {date, location, event} ),
+      # it is different from channel|version, channel|version is just like a sub-element of segment.
+      => COUNT( metric.by_channel(c1).sum_by_segments( s1, s2, ..sn ) ).maybe != COUNT( metric.by_channel(c1) )
+
+      # if segment_a = { date < '2012-10-01' }, segment_b = { date >= '2012-10-01' }
+      => COUNT( metric.by_channel(c1).sum_by_segments( segment_a, segment_b ) ).should == COUNT( metric.by_channel(c1) )
+      # if segment_a = { date < '2012-10-01' && location = {'China'} }, segment_b = { date >= '2012-10-01' }, segment_c = { location != {'China'} }
+      => COUNT( metric.by_version(v1).sum_by_segments( segment_a, segment_b, segment_c ).should == COUNT( metric.by_version(v1) )
+      # if s1 = A1, s2 = A2, ..sn = An ( { A1, A2, ..An } == { :all } )
+      => COUNT( metric.by_channel(c1).sum_by_segments( s1, s2, .. sn ) ).should == COUNT( metric.by_channel(c1) )
+
+      ```
 
 + Reversion check
 
-  ```ruby
-  metric = [ :install, :launch, :active, :active_rate, :upgrade ]
+  - 对 **各项指标** 针对 **各过滤条件之间** 进行反转检验
 
-  filter = [ :channel, :segment, :version ]
-  # filter vs. metric
-  COUNT( filter.get_daily_metric ).should == COUNT( metric.get_daily_by_filter )
-  # filter vs. filter
-  COUNT( filter1.get_daily_metric_by_filter2 ).should == COUNT( filter2.get_daily_metric_by_filter1 )
-  COUNT( filter1.get_daily_metric_by_filter2_and_filter3 ).should
-      == COUNT( filter2.get_daily_metric_by_filter1_and_filter3 )
-      == COUNT( filter3.get_daily_metric_by_filter1_and_filter2 )
+  - 前端： **渠道、版本** 页面下**各个指标**值 == **各个指标** 页面下通过**渠道、版本**过滤后的值
 
-  ```
+  - 后端： 由于 **分群** 不像 **渠道、版本** 有专门的展示页，所以后端对方法调用的检验需要加上分群与渠道、版本的交叉
+
+      ```ruby
+      metric = [ install, launch, active, active_rate, upgrade ]
+
+      filter = [ channel, segment, version ]
+      # filter vs. metric
+      COUNT( filter.get_daily_metric ).should == COUNT( metric.get_daily_by_filter )
+      # filter vs. filter
+      COUNT( filter1.get_daily_metric_by_filter2 ).should == COUNT( filter2.get_daily_metric_by_filter1 )
+      COUNT( filter1.get_daily_metric_by_filter2_and_filter3 ).should
+          == COUNT( filter2.get_daily_metric_by_filter1_and_filter3 )
+          == COUNT( filter3.get_daily_metric_by_filter1_and_filter2 )
+
+      ```
 
 + Consistency check ( between tables and charts )
 
-  - for a set of chart and table, just check one form
+  - 图表间数据的一致性检验 （主要检验出现在多处的相同指标数据）
 
 + Optional check
 
   - time check
+
+      * **日/周/月** 级数据的加和检验
+
+      * **今日 / 昨日 / 之前7天 / 之前30天** 时间标签的检验
+
   - rate check ( :acceptable => (99.x%..100.0%)  )
 
 - - -
@@ -87,7 +134,7 @@
 
     # <3. ~> consistency_check(:table_table)
     Table('Top 10 版本趋势').top_10_versions.should == Table('版本统计').versions.first(10)
-    Table('Top 10 版本趋势').metric.date_filter(:today, :yesterday).should == Table('版本统计').metric.tab_filter(:today, :yesterday)
+    Table('Top 10 版本趋势').metric.date_filter(:today | :yesterday).should in Table('版本统计').metric.tab_filter(:today | :yesterday)
     ```
 
   + 版本详情页
