@@ -111,9 +111,13 @@
 
   + sum_check
 
+  + issue [#3], [#113]
+
 2\. **启动次数**
 
   + sum_check
+
+  + issue [#50], [#110], [#113]
 
 3\. **活跃用户**
 
@@ -159,6 +163,8 @@
 
     ```
 
+  + issue [#114]
+
 5\. **行业数据**
 
   + consistency_check(:table_table)
@@ -184,6 +190,8 @@
     attribute = [ :device, :os_version, :resolution ]
     ```
 
+  + issue [#123], [#124]
+
 7\. **网络及运营商**
 
   + sum_check
@@ -193,6 +201,8 @@
     filter = [ :channel, :segment, :version ]
     attribute = [ :access, :carrier ]
     ```
+
+  + issue [#50]
 
 8\. **地域**
 
@@ -242,6 +252,8 @@
     filter = [ :channel, :version ]
     ```
 
+  + issue [#108], [#114]
+
 11\. **使用时长**
 
   + sum_check
@@ -251,6 +263,8 @@
     ```
 
   + optional_check(:rate)
+
+  + issue [#110], [#117], [#119]
 
 12\. **使用频率**
 
@@ -262,6 +276,8 @@
 
   + optional_check(:rate)
 
+  + issue [#116]
+
 13\. **访问深度**
 
   + sum_check
@@ -271,6 +287,8 @@
     ```
 
   + optional_check(:rate)
+
+  + issue [#50]
 
 14\. **使用间隔**
 
@@ -315,3 +333,14 @@
     ```
 
 
+[#3]:   http://github.umeng.com/Umeng-PM/3.0-QA/issues/3    "issue #3"
+[#50]:  http://github.umeng.com/Umeng-PM/3.0-QA/issues/50   "issue #50"
+[#108]: http://github.umeng.com/Umeng-PM/3.0-QA/issues/108  "issue #108"
+[#110]: http://github.umeng.com/Umeng-PM/3.0-QA/issues/110  "issue #110"
+[#113]: http://github.umeng.com/Umeng-PM/3.0-QA/issues/113  "issue #113"
+[#114]: http://github.umeng.com/Umeng-PM/3.0-QA/issues/114  "issue #114"
+[#116]: http://github.umeng.com/Umeng-PM/3.0-QA/issues/116  "issue #116"
+[#117]: http://github.umeng.com/Umeng-PM/3.0-QA/issues/117  "issue #117"
+[#119]: http://github.umeng.com/Umeng-PM/3.0-QA/issues/119  "issue #119"
+[#123]: http://github.umeng.com/Umeng-PM/3.0-QA/issues/123  "issue #123"
+[#124]: http://github.umeng.com/Umeng-PM/3.0-QA/issues/124  "issue #124"
