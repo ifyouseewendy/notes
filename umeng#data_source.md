@@ -18,9 +18,6 @@ __online source:__ (if filters include segment or have intersections, then must 
 
 * launch:  daily/weekly/monthly + daily/weekly/monthly_by_version
 
-* active:  daily + daily_by_channel/version
-
-
-
+* active:  daily + daily_by_channel/version # active weekly/monthly data comes DP as it should reject duplicates
 
 
