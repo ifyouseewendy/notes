@@ -14,9 +14,9 @@ active----ol-------ol------------------ol--------|---------dp----------------dp-
 
 __online source:__ (if filters include segment or have intersections, then must ___DP source___)
 
-* install: daily/weekly/monthly + daily/weekly/monthly_by_channel/version
+* install: daily/weekly/monthly + daily/weekly/monthly_by_channel/version # except intersection )
 
-* launch:  daily/weekly/monthly + daily/weekly/monthly_by_version
+* launch:  daily/weekly/monthly + daily/weekly/monthly_by_version # except channel filter and intersection )
 
 * active:  daily + daily_by_channel/version # active weekly/monthly data comes DP as it should reject duplicates
 
