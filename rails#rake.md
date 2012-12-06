@@ -27,13 +27,19 @@
       desc 'outer task'
       task :foo do
         Rake::Task["wendi:bar"].reenable
-        Rake::Task["wendi:bar"].invoke
+        Rake::Task["wendi:bar"].invoke("hello", "world")
       end
 
       desc 'inner task'
-      task :bar do
+      task :bar, [:arg1, :arg2] => :environment do |t, args|
         puts "hello world"
+        puts "t is : #{t}"
+        puts "args are : #{args}"
       end
+
+      => hello world
+      => t is : wendi:bar
+      => args are : {:arg2=>"world", :arg1=>"hello"}
 
     end
     ```
