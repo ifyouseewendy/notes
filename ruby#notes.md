@@ -2,39 +2,68 @@
 
 ### 1. tags.map(&:name)?
 
-<1.
-        tags.map(&:name)
+1. example
 
-        # pass a proc to a method with the & syntax
-        tags.map(&:name.to_proc)
+    ```ruby
+    tags.map(&:name)
 
-        tags.map{ |tag| tag.name }
+    # pass a proc to a method with the & syntax
+    tags.map(&:name.to_proc)
 
-<2. another example
+    tags.map{ |tag| tag.name }
+    ```
 
-        ['foo', 'bar', 'blah'].map { |e| e.upcase }
-        # => ['FOO', 'BAR', 'BLAH']
+2. another example
 
-        block = proc { |e| e.upcase }
-        block.call("foo") # => "FOO"
+    ```ruby
+    ['foo', 'bar', 'blah'].map { |e| e.upcase }
+    # => ['FOO', 'BAR', 'BLAH']
 
-        block = proc { |e| e.upcase }
-        ['foo', 'bar', 'blah'].map(&block)
-        # => ['FOO', 'BAR', 'BLAH']
+    block = proc { |e| e.upcase }
+    block.call("foo") # => "FOO"
 
-        ['foo', 'bar', 'blah'].map(&:upcase)
-        # => ['FOO', 'BAR', 'BLAH']
+    block = proc { |e| e.upcase }
+    ['foo', 'bar', 'blah'].map(&block)
+    # => ['FOO', 'BAR', 'BLAH']
 
-<3. [1, 2, 3].inject(&:+) can be omitted for [1, 2, 3].inject(:+).
+    ['foo', 'bar', 'blah'].map(&:upcase)
+    # => ['FOO', 'BAR', 'BLAH']
+    ```
+
+3. `[1, 2, 3].inject(&:+)` can be omitted for `[1, 2, 3].inject(:+)`
 
 ### 2. Array#pack, String#unpack
 
-["abc"].pack("a") => "a"
-["abc"].pack("a*") => "abc"
-["abc"].pack("a4") => "abc\0"
+* code
 
-"abc\0".unpack("a4") => ["abc\0"]
-"abc ".unpack("a4") => ["abc "]
+    ```ruby
+    ["abc"].pack("a") => "a"
+    ["abc"].pack("a*") => "abc"
+    ["abc"].pack("a4") => "abc\0"
 
-+ KEY_SEPARATORS = { :default => [0x1F].pack("c*"), :segment => [0x1E].pack("c*") }.freeze }
+    "abc\0".unpack("a4") => ["abc\0"]
+    "abc ".unpack("a4") => ["abc "]
+
+    KEY_SEPARATORS = { :default => [0x1F].pack("c*"), :segment => [0x1E].pack("c*") }.freeze }
+    ```
+
+### 3. Array#in_groups, in_groups_of
+
+* code
+
+    ```ruby
+    arr = [1, 2, 3, 4, 5, 6]
+    arr.in_groups(3)    => [[1,2], [3,4], [5,6]]
+    arr.in_groups_of(3) => [[1,2,3], [4,5,6]]
+
+    arr << 7
+    arr.in_groups(3)        => [[1,2,3], [4,5,nil], [6,7,nil]]
+    arr.in_groups(3, false) => [[1,2,3], [4,5], [6,7]]
+    arr.in_groups(3, 'a')   => [[1,2,3], [4,5,'a'], [6,7,'a']]
+
+    arr.in_groups_of(3)         => [[1,2,3], [4,5,6], [7,nil,nil]]
+    arr.in_groups_of(3, false)  => [[1,2,3], [4,5,6], [7]]
+    arr.in_groups_of(3, 'a')    => [[1,2,3], [4,5,6], [7,'a','a']]
+    ```
+
 
