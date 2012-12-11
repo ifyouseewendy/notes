@@ -5,6 +5,7 @@
     class A1
       @@foo = 'foo'
 
+      # in rails (all versions), cattr_accessor :foo is short for code below
       class << self
         def foo=(foo)
           @@foo = foo
