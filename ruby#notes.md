@@ -66,4 +66,20 @@
     arr.in_groups_of(3, 'a')    => [[1,2,3], [4,5,6], [7,'a','a']]
     ```
 
+### 4. "*" splat operator
+
+* as a right_value, to unpack an array
+* as a left_value, to get an array
+
+    ```ruby
+    x,y,z=1,*[2,3]     # Same as x,y,z = 1,2,3
+
+    *x,y=1,2,3          # x=[1,2]; y=3
+    *x,y=1,2             # x=[1]; y=2
+    *x,y=1                # x=[]; y=1
+
+    # with parens
+    x,y,z=1,[2,3]          # No parens: x=1;y=[2,3];z=nil
+    x,(y,z)=1,[2,3]        # Parens: x=1;y=2;z=3
+    ```
 
