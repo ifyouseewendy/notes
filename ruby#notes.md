@@ -83,3 +83,12 @@
     x,(y,z)=1,[2,3]        # Parens: x=1;y=2;z=3
     ```
 
+### 5. about equality
+
+* `equal?`, checks actually the same object with the same `object_id`.
+* `eql?`, checks for value, but **no type conversion**. `1.eql? 1.0 #=> false`
+  - used in Hash to check equality of keys, Hash will check for `object_id` by default
+  - if defined `eql?`, should define `hash` method too for generate hash code
+* `==`, checks for value, **allowing type conversion**. `1 == 1.0 #=> true`
+* `===`, checks for case equality. `Numeric === 1 #=> true`
+
