@@ -1,3 +1,29 @@
+#### Class Variable
+
+1. ***can be accessed in instance_methods***.
+2. can be shared between inheritance, ***BUT behaves weird***.
+
+#### Class Instance Variable
+
+1. defined in class scope, ***cannot be accessed in instance_method***.
+2. cannot be shared between inheritance, each class hold its own copy.
+3. define
+
+    ```ruby
+    class A
+      class << self
+        attr_accessor :x
+      end
+    end
+    A.x = 'x'
+    A.x # => 'x'
+
+    class AA < A; end
+    AA.x # => nil
+    ```
+
+### example
+- - -
 * **Class Variable** only has one copy, and share it between inheritance
 
     ```ruby
