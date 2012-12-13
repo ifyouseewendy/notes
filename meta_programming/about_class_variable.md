@@ -1,12 +1,15 @@
 #### Class Variable
 
 1. ***can be accessed in instance_methods***.
-2. can be shared between inheritance, ***BUT behaves weird***.
+2. shared between inheritance, ***BUT behaves weird***.
 
 #### Class Instance Variable
 
 1. defined in class scope, ***cannot be accessed in instance_method***.
 2. cannot be shared between inheritance, each class hold its own copy.
+
+  * ***Rubys Instance Variable has nothing to do with inheritance mechanisum, they are created when the first assignment***, the reason that they seem appear to be inherited is that instance variables are usually created by methods, which are often inherited or chained.
+
 3. define
 
     ```ruby
