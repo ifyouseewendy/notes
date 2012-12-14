@@ -5,18 +5,26 @@ class Dog
     @name = name
   end
 
-  def can(*args)
+  def can(*args, &block)
     args.each do |arg|
-      self.class.class_eval do
+      eigen_class = class << self; self; end
+      instance_name = @name
+      Object.class_eval do
+        define_method "name" do
+          instance_name
+        end
+      end
+      eigen_class.class_eval do
         define_method arg do
-          puts "#@name #{MSG[arg]}"
+          block ? block.call : "#@name #{MSG[arg]}"
         end
       end
     end
   end
 
   def method_missing(method, *args, &block)
-    puts "#@name doesn't understand #{method}"
+    "#@name doesn't understand #{method}"
   end
 
 end
+
