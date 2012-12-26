@@ -4,6 +4,7 @@
 * example1
 
     ```ruby
+    # Mongoid.database[User.collection.name].find......
     db = Mongo::Connection.new('localhost',27017).db('application_development')
     db.collection("users").find({}, {:timeout => false}) do |cursor|
       puts cursor.class # => Mongo::Cursor
