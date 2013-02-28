@@ -24,7 +24,7 @@ be evaluated in the context of those bindings.
 
 - - -
 
-**instace_eval** and **class_eval** 
+**Object.instace_eval** and **Module.class_eval** ( Kernel.eval )
 
 + **instance_eval** defines **singleton methods** of the object. **class_eval** defines regular **instance methods**.
 + the important difference between these two methods and the global **eval** is that instance_eval and class_eval can accept a block of code to evaluate.
