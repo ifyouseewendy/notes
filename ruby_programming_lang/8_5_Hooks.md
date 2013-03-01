@@ -1,14 +1,22 @@
+**Class** instance method
+
++ inherited
+
+**Module** instance methods
+
 + included
 + extended
-+ inherited
 + method_added
 + method_removed
 + method_undefined
++ const_missing
+
+**Object** instance methods
+
 + singleton_method_added
 + singleton_method_removed
 + singleton_method_undefined
-+ **method_missing** ( only one NO Class Methods )
-+ **const_missing**
++ **method_missing**
 
 
 - - -
