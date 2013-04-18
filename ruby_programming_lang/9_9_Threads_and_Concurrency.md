@@ -47,6 +47,15 @@ complete. You can call the **value** method of a thread to
 wait for it to finish. If you don’t care about the value of your threads, you can wait with
 the **join** method instead.
 
+```ruby
+threads = []
+threads.push(Thread.new { n = rand(5); sleep n; n })
+threads.push(Thread.new { n = rand(5); sleep n; n })
+threads.push(Thread.new { n = rand(5); sleep n; n })
+
+threads.each {|t| t.join}
+```
+
 **unhandled exceptions**
 
 + If an exception is raised in the **main thread**, and is not handled anywhere, the Ruby interpreter prints a message and exits.
