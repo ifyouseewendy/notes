@@ -9,7 +9,7 @@
   link_to "Delete", auction_path(auction), :method => :delete
 
   form_for "auction", :url => auction_path(auction),
-           :html => { :method => :put } do |f| }
+           :html => { :method => :put } do |f|
   ```
 
 ## The PUT and DELETE Cheat
@@ -96,11 +96,15 @@ resources :auctions do
   resources :bids do
     member do
       get :retract
+      post :retract
+      # match :retract, :via => [:get, :post]
     end
+    # match :retract, :via => [:get, :post], :on => :member
   end
 end
 
 link_to "Retract", retract_bid_path(auction, bid)
+link_to "Retract", retract_bid_path(auction, bid), :method => :post
 ```
 
 Custom Action Names
