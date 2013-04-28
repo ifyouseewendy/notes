@@ -1,13 +1,57 @@
-### angel_nest_startup
+### startup
+- - -
+```ruby
+rails new project --database=mysql
+
+# -T skip Test::Unit
+rails new project -T
+
 - - -
 
-1. `rails new angel_nest_startup --database=mysql`
-2. basic config
+$ git init
+$ bundle install
+$ rvm --rvmrc --create 1.9.3@project
+```
 
-    ```ruby
-    $ git init
-    $ vim config/database.yml
-    ```
+### test
+- - -
+
+```ruby
+group :development, :test do
+  gem 'rspec-rails'
+  gem 'factory_girl_rails'
+end
+
+group :test do
+  gem 'database_cleaner'
+  gem 'email_spec'
+end
+```
+
+**rspec-rails** [#](https://github.com/rspec/rspec-rails)
+
+**factory_girl_rails** [#](https://github.com/thoughtbot/factory_girl_rails)
+
+**database_cleaner** [#](https://github.com/bmabey/database_cleaner)
+
+```ruby
+# spec/spec_helper.rb
+
+RSpec.configure do |config|
+
+  config.before(:suite) do
+    DatabaseCleaner.strategy = :truncation
+  end
+  config.before(:each) do
+    DatabaseCleaner.start
+  end
+  config.after(:each) do
+    DatabaseCleaner.clean
+  end
+end
+```
+
+
 3. devise config
 
     ```ruby
