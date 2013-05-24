@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+    <style type="text/css">
+      div#test3_panel{
+        margin:0px;
+        padding:5px;
+        text-align:center;
+        background:#e5eecc;
+        border:solid 1px #c3c3c3;
+      }
+    </style>
+
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function(){
+          $('p.test1').hide();
+          $('#button1').click(function(){
+            if( $(this).text() == 'hide' ){
+              $(this).text('show');
+            }else{
+              $(this).text('hide');
+            }
+            $('p.test1').toggle();
+          });
+
+          $('#button2').click(function(){
+            $('#test2_div1').fadeToggle();
+            $('#test2_div2').fadeToggle('slow');
+            $('#test2_div3').fadeToggle(2000);
+          });
+          $("#button3").click(function(){
+            $("#test2_div1").fadeTo("slow",0.15);
+            $("#test2_div2").fadeTo("slow",0.4);
+            $("#test2_div3").fadeTo("slow",0.7);
+            $("#test2_div3").fadeTo("slow",1);
+            $("#test2_div2").fadeTo("slow",1);
+            $("#test2_div1").fadeTo("slow",1);
+          });
+
+          $('#test3_panel').hide();
+          $('#button4').click(function(){
+            $("#test3_panel").slideToggle('slow');
+          });
+
+          $('#button5').click(function(){
+            $('#test4_div1').animate({height: 'toggle'}, 'slow');
+          });
+          $('#button6').click(function(){
+            $('#test4_div2').animate({
+               left:'250px',
+               height:'+=150px',
+               width:'+=150px'
+              }, 'slow');
+            $('#test4_div2').animate({
+               left:'250px',
+               height:'-=150px',
+               width:'-=150px'
+              }, 'slow');
+          });
+          $('#button7').click(function(){
+            var div=$("#test4_div3");
+            div.animate({height:'300px',opacity:'0.4'},"slow");
+            div.animate({width:'300px',opacity:'0.8'},"slow");
+            div.animate({height:'100px',opacity:'0.4'},"slow");
+            div.animate({width:'100px',opacity:'0.8'},"slow");
+          });
+
+          $('#button8').click(function(){
+            $('.test4').stop();
+          });
+
+          $('#button9').click(function(){
+            $('#test5').css('color', 'red').slideUp(1000).slideDown(1000);
+          });
+
+          $('#button10').click(function(){
+            alert($('#test6_text').text());
+          });
+          $('#button11').click(function(){
+            alert($('#test6_text').html());
+          });
+          $('#button12').click(function(){
+            alert($('#test6_input').val());
+          });
+          $('#button13').click(function(){
+            alert($('#test6_w3s').attr('href'));
+          });
+      });
+    </script>
+  </head>
+
+  <body>
+    <p>
+      <p>hide(), show(), toggle()</p>
+      <button id='button1'>show</button>
+      <p class='test1'>Hello World!</p>
+    </p>
+    <p>
+      <p>fadeIn(), fadeOut(), fadeToggle()</p>
+      <button id='button2'>fadeToggle</button>
+      <button id='button3'>fadeTo</button>
+      <br><br>
+      <div id="test2_div1" style="width:80px;height:80px;background-color:red;"></div>
+      <br>
+      <div id="test2_div2" style="width:80px;height:80px;background-color:green;"></div>
+      <br>
+      <div id="test2_div3" style="width:80px;height:80px;background-color:blue;"></div>
+    </p>
+    <p>
+      <p>slideUp(), slideDown(), slideToggle()</p>
+      <button id='button4'>click</button>
+      <div id='test3_panel'>
+        <p>David Lynch - Blue Velvet</p>
+        <p>Fall Out Boys - What a Catch, Donnie</p>
+      </div>
+    </p>
+    <p>
+      <p>animate()</p>
+      <button id='button5'>animate1</button>
+      <button id='button8'>stop</button>
+      <div id='test4_div1' class='test4' style="background:red;height:100px;width:100px;diaplay:block;"></div>
+      <br>
+      <button id='button6'>animate2</button>
+      <div id='test4_div2' class='test4' style="background:green;height:100px;width:100px;display:block;"></div>
+      <br>
+      <button id='button7'>animate3</button>
+      <div id='test4_div3' class='test4' style="background:blue;height:100px;width:100px;display:block;"></div>
+    </p>
+    <p style='display:block;'>
+      <p>chaining</p>
+      <button id='button9'>click</button>
+      <p id='test5'>U WANNA SEE ME?</p>
+    </p>
+    <p>
+      <p>text() - 设置或返回所选元素的文本内容</p>
+      <p>html() - 设置或返回所选元素的内容（包括 HTML 标记）</p>
+      <p>val() - 设置或返回表单字段的值</p>
+      <p>attr() 方法用于获取属性值(href)</p>
+      <p id='test6_text'>HELLO <b>WORLD</b></p>
+      <button id='button10'>text()</button>
+      <button id='button11'>html()</button>
+      <p>name: <input type="text" id="test6_input" value="wendi"></p>
+      <button id='button12'>val()</button>
+      <p><a href="http://www.w3school.com.cn" id="test6_w3s">W3School.com.cn</a></p>
+      <button id='button13'>attr()</button>
+    </p>
+    <p>
+      <p>jQuery 添加</p>
+      <ul>
+        <li>append() - 在被选元素的结尾插入内容</li>
+        <li>prepend() - 在被选元素的开头插入内容</li>
+        <li>after() - 在被选元素之后插入内容</li>
+        <li>before() - 在被选元素之前插入内容</li>
+      </ul>
+    </p>
+    <p>
+      <p>jQuery 删除</p>
+      <ul>
+        <li>remove() - 删除被选元素（及其子元素）</li>
+        <li>empty() - 从被选元素中删除子元素</li>
+      </ul>
+    </p>
+    <p>
+      <p>jQuery CSS类</p>
+      <ul>
+        <li>addClass() - 向被选元素添加一个或多个类</li>
+        <li>removeClass() - 从被选元素删除一个或多个类</li>
+        <li>toggleClass() - 对被选元素进行添加/删除类的切换操作</li>
+        <li>css() - 设置或返回样式属性</li>
+      </ul>
+    </p>
+    <p>
+      <p>jQuery 尺寸</p>
+      <ul>
+        <li>width()</li>
+        <li>height()</li>
+        <li>innerWidth() - 包括内边距</li>
+        <li>innerHeight() - 包括内边距</li>
+        <li>outerWidth() - 包括外边距</li>
+        <li>outerHeight() - 包括外边距</li>
+      </ul>
+    </p>
+    <p>
+      <p>jQuery AJAX</p>
+      <ul>
+        <li>load()</li>
+        <code>$(selector).load(URL,data,callback);</code>
+        <pre>
+        $("button").click(function(){
+          $("#div1").load("demo_test.txt",function(responseTxt,statusTxt,xhr){
+            if(statusTxt=="success")
+              alert("外部内容加载成功！");
+            if(statusTxt=="error")
+              alert("Error: "+xhr.status+": "+xhr.statusText);
+          });
+        })
+        </pre>
+        <p>可选的 callback 参数规定当 load() 方法完成后所要允许的回调函数。回调函数可以设置不同的参数：</p>
+        <ul>
+          <li>responseTxt - 包含调用成功时的结果内容</li>
+          <li>statusTXT - 包含调用的状态</li>
+          <li>xhr - 包含 XMLHttpRequest 对象</li>
+        </ul>
+        <li>get()</li>
+        <code>$.get(URL,callback);</code>
+        <pre>
+          $("button").click(function(){
+            $.get("demo_test.asp",function(data,status){
+              alert("Data: " + data + "\nStatus: " + status);
+            });
+          })
+        </pre>
+        <li>post()</li>
+        <code>$.post(URL,data,callback);</code>
+        <pre>
+        $("button").click(function(){
+          $.post("demo_test_post.asp",
+            {
+              name:"Donald Duck",
+              city:"Duckburg"
+            },
+            function(data,status){
+                alert("Data: " + data + "\nStatus: " + status);
+            }
+          })
+        })
+        </pre>
+      </ul>
+    </p>
+  </body>
+</html>
