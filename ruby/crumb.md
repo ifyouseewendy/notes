@@ -92,3 +92,40 @@
 * `==`, checks for value, **allowing type conversion**. `1 == 1.0 #=> true`
 * `===`, checks for case equality. `Numeric === 1 #=> true`
 
+### 6. tap & returning
+
+Object#tap as an alternative to ActiveSupport’s returning
+
+```ruby
+def tap
+  yield(self)
+  self
+end
+
+# before
+
+def foo
+  result = {}
+  .. do stuff with result ..
+  result
+end
+
+# after
+
+def foo
+  {}.tap do |result|
+    .. do stuff with result ...
+  end
+end
+
+# returning
+
+def sexy
+  # returning results={} do
+  returning({}) do |results|
+    [:x, :y, :z].each do |letter|
+      results[letter] = rand(100)
+    end
+  end
+end
+```
