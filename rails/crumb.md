@@ -26,3 +26,53 @@ WARNING: content_for is ignored in caches. So you shouldn’t use it for element
   <li><%= link_to 'Login', :action => 'login' %></li>
 <% end %>
 ```
+
+## content_tag(name, content = nil, options = nil, &block)
+
+```ruby
+content_tag(:p, "Hello world!")
+ # => <p>Hello world!</p>
+content_tag(:div, content_tag(:p, "Hello world!"), :class => "strong")
+ # => <div class="strong"><p>Hello world!</p></div>
+content_tag("select", options, :multiple => true)
+ # => <select multiple="multiple">...options...</select>
+
+<%= content_tag :div, :class => "strong" do -%>
+  Hello world!
+<% end -%>
+ # => <div class="strong">Hello world!</div>
+ 
+# this if is cool!
+content_tag(:div, "Hello World", :class => ("active" if i_am_an_active_item?))
+
+arr = ['a','b','c']
+content_tag :div do 
+  arr.collect { |letter| content_tag(:scan, letter) 
+end
+#=> <div>
+#      <scan>a</scan>
+#      <scan>b</scan>
+#      <scan>c</scan>
+#   </div>
+```
+
+## tag(name, options = nil, open = false, escape = true)
+
+If you want to output an empty element (self-closed) like “br”, “img” or “input”, use the tag method instead.
+
+```ruby
+tag("br")
+# => <br />
+
+tag("br", nil, true)
+# => <br>
+
+tag("input", :type => 'text', :disabled => true)
+# => <input type="text" disabled="disabled" />
+
+tag("img", :src => "open & shut.png")
+# => <img src="open & shut.png" />
+
+tag("img", {:src => "open & shut.png"}, false, false)
+# => <img src="open & shut.png" />
+```
