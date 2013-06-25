@@ -76,3 +76,57 @@ tag("img", :src => "open & shut.png")
 tag("img", {:src => "open & shut.png"}, false, false)
 # => <img src="open & shut.png" />
 ```
+
+## html_safe
+
++ **html_safe**, *String* method, return a *SafeBuffer*, mark the 'html' safe.
+
+  The behavior of *SafeBuffer* differs from a *String* in one way only: When you append a String to a SafeBuffer (by calling + or <<), that other String is HTML-escaped before it is appended to the SafeBuffer:
+
+    ```ruby
+    "foo".html_safe.length
+    # => 3
+    "foo".html_safe.class
+    # => ActiveSupport::SafeBuffer
+
+    "<foo>".html_safe + "<bar>"
+    # => "<foo>&lt;bar&gt;"
+    "<foo>".html_safe + "<bar>".html_safe
+    # => "<foo><bar>"
+    ```
+
+> **How Rails auto-escapes in views**
+
+    ```ruby
+    <p>
+      <%= '<br />' %>
+      <%= '<br />'.html_safe %>
+    </p>
+
+    html = ''.html_safe
+    html << '<p>'.html_safe
+    html << '<br />'
+    html << '<br />'.html_safe
+    html << '</p>'.html_safe
+    html
+
+    # result
+    <p>
+      &lt;br /&gt;
+      <br />
+    </p>
+    ```
+
++ **raw**, *OutputSafetyHelper* method, same as *html_safe*.
+
++ **h**, alias for *ERB::Util#html_escape*, DO ESCAPE html.
+
+> **Why in Rails 3, <%= note.html_safe %> and <%= h note.html_safe %> give the same result?**
+
+    ```ruby
+    <%= "<script>".html_safe %> => "<script>"
+    <%= h "<script" %>        => &lt;script&gt;
+
+    # while h can only work on String, as "<script>".html_safe generates a SafeBuffer
+    ```
+
