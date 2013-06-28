@@ -1,0 +1,52 @@
+body { counter-reset: headnum; }
+
+h3:before{
+  content: "(" counter(headnum, upper-latin) ") ";
+  counter-increment: headnum;
+}
+h3.numbered {counter-reset: mynum;}
+h3 {
+  border-top: 1px solid gray;
+  text-indent: 1em;
+}
+
+ul, #numbered{
+  border: 1em solid #69b;
+  padding-right: 1em;
+  float: left;
+}
+li { list-style: lower-latin; margin-bottom: 8px; }
+
+p.numbered:before {
+  content: counter(mynum) ": ";
+  counter-increment: mynum;
+  font-weight: bold;
+}
+
+div#parent-div {
+  position: relative;
+  font: bold 200% sans-serif;
+  clear: both;
+}
+
+#forward, #back {
+  position: absolute;
+  margin: 0px;
+  top: 0px;
+  left: 0px;
+}
+
+#forward {
+  color: blue;
+}
+
+#backward {
+  color: red;
+}
+
+#fixed-pin {
+  position: fixed;
+  top: 3px;
+  right: 3px;
+}
+

@@ -1,0 +1,29 @@
+table td{ border: 1px solid red; }
+
+table#first {
+  border-spacing: 0.5em;
+}
+caption {
+  caption-side: bottom;
+  font-style: italic;
+  text-align: center;
+}
+
+table#second {
+  border-spacing: 0em;
+}
+
+table#third {
+  border-collapse: collapse;
+}
+
+table#fourth td#empty-cell1 {
+  padding: 10px;
+  background-color: blue;
+  empty-cells: hide;
+}
+table#fourth td#empty-cell2 {
+  padding: 10px;
+  background-color: blue;
+  empty-cells: show;
+}

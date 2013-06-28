@@ -1,0 +1,26 @@
+/* body */
+body { background: url('Blue-rule.png') }
+
+/* paragraph */
+p {color: blue;}
+p#first:before, p#second:before { content: url('Yellow-pin.png') }
+#first {font-style: italic;}
+
+strong {
+  color: red;
+  background-color: #ddf;
+  font-size: 2em;
+  font-style: normal;
+}
+
+.carrot {color: red;}
+.spinach {color: green;}
+
+/* menu-bar*/
+div.menu-bar ul ul { display: none; }
+div.menu-bar li:hover > ul { display: block; }
+
+/* button */
+button { font-weight: normal; color: black; }
+button:focus { color: red; }
+button:active { font-weight: bold; color: blue; text-decoration: underline; }
