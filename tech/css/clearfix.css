@@ -1,0 +1,22 @@
+.test {
+  border-bottom: 3px solid blue;
+  margin-bottom: 10px;
+  display: block;
+}
+.box { border: 2px solid red; }
+img { float: left; }
+
+.clear1 { clear: both; }
+
+.clear2 { clear: both; }
+
+.claerfix:before,
+.clearfix:after{
+  content: '';
+  display: table;
+}
+
+.clearfix:after{
+  clear: both;
+}
+
