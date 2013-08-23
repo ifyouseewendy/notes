@@ -28,7 +28,7 @@ most commonly used sections of the manpages for FreeBSD and Linux:
 3. Section 3: C Library Functions
 4. Section 4: Special Files
 
-#### Processes Habe File Descriptors
+#### Processes Have File Descriptors
 - - -
 
 pids represennt running processes, and file descriptors represent open files.
@@ -389,7 +389,7 @@ So with pipes, you can use `#puts` and `#gets` which used a  newline as the deli
 #### Daemon Processes
 - - -
 
-**Daemon processess** are processes that run in the background, **rather than under the control of a user at a terminal**. Common examples are web servers or database server.
+**Daemon processes** are processes that run in the background, **rather than under the control of a user at a terminal**. Common examples are web servers or database server.
 
 > When the kernel is bootstrapped it spawns a process called the `init` process, which `pid` is 1, and `ppid` is 0.
 
@@ -505,7 +505,7 @@ ret # => ''
  
 Process.spawn({'RAILS_ENV' => 'test'}, 'rails server')
 
-Process.spaws('ls', '--wendi', STDERR => STDIN)
+Process.spawn('ls', '--wendi', STDERR => STDIN)
 
  # Do it the bloking way
 system 'sleep 5'
@@ -513,7 +513,7 @@ system 'sleep 5'
  # Do it the non-blocking way
 Process.spawn 'sleep 5'
 
- ＃ Do it the blocking way with Process.spawn
+ # Do it the blocking way with Process.spawn
  # Notice that it returns the pid of the child process
 def foo
 	pid = Process.spawn 'sleep 5'
