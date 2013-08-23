@@ -3,7 +3,7 @@
 #### APIs
 - - -
 
-```
+```ruby
 Process.pid
 Process.ppid
 
@@ -37,7 +37,7 @@ pids represennt running processes, and file descriptors represent open files.
 2. Once a resource is closed its file descriptor number becomes available again.
 3. Only open resources have file descriptors.
 
-```
+```ruby
 passwd = File.open('/etc/passwd')
 puts passwd.fileno 		# => 3
 
@@ -45,7 +45,7 @@ passwd.close
 puts passwd.fileno 		# => closed stream (IOError)
 ```
 
-```
+```ruby
 puts STDIN.fileno		# => 0
 puts STDOUT.fileno 		# => 1
 puts STDERR.fileno		# => 2
@@ -56,13 +56,13 @@ puts STDERR.fileno		# => 2
 
 **NOFILE**
 
-```
+```ruby
 Process.getrlimit(:NOFILE)		# => [$soft_limit, $hard_limit]
 ```
 
 when exceeded soft limits, an exception will raised, but you can always change the limit if you want to.
 
-```
+```ruby
 Process.setrlimit(:NOFILE, 3)
 
 File.open('/dev/null')	# => Errno::EMFILE: Too many open files
@@ -70,7 +70,7 @@ File.open('/dev/null')	# => Errno::EMFILE: Too many open files
 
 **OTHERS**
 
-```
+```ruby
  # max number of simultaneous processes allowed for the current user
 Process.getrlimit(:NPROC)
 
@@ -87,7 +87,7 @@ Process.getrlimit(:STACK)
 
 **exit**
 
-```
+```ruby
  # exit program with success status code (0)
 exit
 
@@ -108,7 +108,7 @@ exit
 
 set the exit code to 1 by default, and you can pass a message to it, and it'll be printed into `STDERR`
 
-```
+```ruby
  # at_exit are invoked when using abort
 at_exit { puts 'bye' }
 abort "Something went horribly wrong."
@@ -132,7 +132,7 @@ One call to `fork` method actually returns twice.
 1. returns child-process pid in parent-process
 2. returns `nil` in child-process
 
-```
+```ruby
 if fork
 	puts 'parent entered.'
 else
@@ -145,7 +145,7 @@ There's no guarantee that when you `fork` 4 new processes and each process by a 
 
 when passing a block to the `fork`, that the block will be executed in the new child-process, and the parent-process simply skips over it.
 
-```
+```ruby
 fork do
 	puts 'child enters here'
 end
@@ -173,7 +173,7 @@ Because **MRI**'s garbage collector uses a 'mark-and-sweep' algorithm. When **GC
 
 `Process.wait` is a blocking call instructing the parent process to wait for **one of its child processes** to exit before continuing.
 
-```
+```ruby
 fork do
 	5.times do
 		sleep 1
@@ -203,7 +203,7 @@ as `wait` returns the child process pid, `wait2` returns 2 values (pid, status).
 
 This status can be used as communication between processes via exit codes. The status returned is an instance of `Process::Status`.
 
-```
+```ruby
  # communication between processes without filesystem and network!
 5.times do
 	fork do
@@ -230,7 +230,7 @@ end
 
 Both `wait` and `waitpid` aliased to the same thing.
 
-```
+```ruby
 Process.wait 111 	# <=> Process.waitpid 111
 
 Process.waitpid -1 	# <=> Process.wait
@@ -238,7 +238,7 @@ Process.waitpid -1 	# <=> Process.wait
 
 **Race Conditions**
 
-```
+```ruby
 2.times do
 	fork do
 		abort 'Finished!'r
@@ -288,7 +288,7 @@ To properly handle `:CHLD` you must call `Process.wait` in a loop and look for a
 
 `Process.wait(-1, Process::WNOHANG)`, take another param, to tell the kernel not to block if no child has exited.
 
-```
+```ruby
 child_processes = 3
 dead_processes = 0
 
@@ -327,7 +327,7 @@ It's possible for the last `:CHLD` signal to arrive after the previous `:CHLD` h
 
 **Redefining Signals**
 
-```
+```ruby
 puts Process.pid
 trap(:INT) { print 'hello, u got trapped by me' }
 sleep
@@ -335,7 +335,7 @@ sleep
 
 **Ignoring Signals**
 
-```
+```ruby
 puts Proceess.pid
 trap(:INT, "IGNORE")
 sleep
@@ -348,7 +348,7 @@ sleep
 + **Pipe** hold a **stream** of data.
 + **Pipe** is a **uni-directional stream*** of data.
 
-```
+```ruby
 reader, writer = IO.pipe
 writer.write("Into the pipe I go…")
 writer.close
@@ -359,7 +359,7 @@ close the pipe, because IO#read will continue reading data until it sees an EOF.
 
 **Sharing Pipes**
 
-```
+```ruby
 reader, write = IO.pipe
 
 fork do
@@ -395,7 +395,7 @@ So with pipes, you can use `#puts` and `#gets` which used a  newline as the deli
 
 **create daemon processes**
 
-```
+```ruby
 def daemonize_app
 	if RUBY_VERSION < '1.9'
 		exit if fork
@@ -424,7 +424,7 @@ So when a Ruby script that shells out a long-running shell command, when Ctrl-C 
 
 Session group is a collection of process groups.
 
-```
+```ruby
 git log | grep ruby | less
 ```
 
@@ -471,13 +471,13 @@ Generally pass an array where possible.
 
 return value: if the exit code was 0, returns true, otherwise returns false.
 
-```
+```ruby
 ret = system('ls') 		# => true
 ```
 
 **Kernel#`**
 
-```
+```ruby
 ret = `ls`				# => "Documents\nPix\n…"
 %x(git log | tail -10)
 ```
@@ -486,7 +486,7 @@ return value: the `STDOUT` of the terminal program collected into a String.
 
 It's using `fork(2)` under the hood, and doesn't do anything special with `STDERR`.
 
-```
+```ruby
 ret = `ls --wendi`  
 
  # ls: illegal option -- -  
@@ -500,7 +500,7 @@ ret # => ''
 + `Kernel#system` will block until the comand is finished.
 + `Process.spawn` will return immediately.
 
-```
+```ruby
  # Ruby 1.9 only!
  
 Process.spawn({'RAILS_ENV' => 'test'}, 'rails server')
@@ -526,7 +526,7 @@ end
 
 The most common usage for `IO.popen` is an implementation of Unix pipes in pure Ruby. Underneath is still doing the `fork+exec`， but it's also setting up a pipe to communicate with the spawned process. That pipe is passed as the block argument in the block form of `IO.popen`.
 
-```
+```ruby
 p = IO.popen('ls')
 p.read
 
@@ -541,7 +541,7 @@ IO.popen('tmp', 'w') { |stream|
 
 `Open3` allows simultaneous access to the `STDIN`, `STDOUT`, `STDERR` of a spawned process.
 
-```
+```ruby
 require 'open3'
 
 Open3.popen3('grep', 'data') { |stdin, stdout, stderr|
