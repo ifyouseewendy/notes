@@ -12,7 +12,7 @@
 **environment.rb**
 
   - require 'application'
-  - runs all initializers ( **Application.initialize!** )
+  - runs all initializers ( `Application.initialize!` )
 
 **environments/development.rb | test.rb | production.rb**
 
